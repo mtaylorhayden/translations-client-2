@@ -1,49 +1,27 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
+
+import handleSubmit from "@/app/api/auth/actions";
 import React from "react";
+import { useFormState } from "react-dom";
+
+export type InitialState = {
+  message: string;
+};
 
 const LoginPage = () => {
-  // should we move this out to an api folder?
-  async function handleSubmit(e: FormData) {
-    "use server";
+  const initialState = { message: "" };
+  const [state, formAction] = useFormState<InitialState, FormData>(
+    handleSubmit,
+    initialState
+  );
 
-    // const formData = new FormData(e.get);
-    const username = e.get("username");
-    const password = e.get("password");
-
-    // after this call we should be able to see a cookie in the storage of my browser
-    const response = await fetch("http://localhost:8080/auth/signIn", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ username, password }),
-    });
-    console.log("response in cookie ", response.headers.get("Set-Cookie"));
-
-    const setCookieHeader = response.headers.get("Set-Cookie");
-    if (setCookieHeader) {
-      const jwtToken = setCookieHeader.split(";")[0].split("=")[1];
-      console.log("JWT Token:", jwtToken);
-      cookies().set({ name: "jwt", value: jwtToken, secure: true, path: "/" });
-    }
-
-    // if (!response.ok) doesn't work investigate
-    if (!response.ok) {
-      console.log("Invalid username or password login page");
-      // how can we display an error here without state?
-      return;
-    }
-
-    // redirect to homepage on success
-    redirect("/");
-  }
   return (
     <>
       <div>
         <div className="w-full max-w-xs">
           <form
             className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-            action={handleSubmit}
+            action={formAction}
           >
             <div className="mb-4">
               <label
@@ -58,6 +36,7 @@ const LoginPage = () => {
                 type="text"
                 placeholder="Username"
                 name="username"
+                required
               />
             </div>
             <div className="mb-6">
@@ -71,13 +50,20 @@ const LoginPage = () => {
                 className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 id="password"
                 type="password"
-                placeholder="******************"
+                placeholder="**********"
                 name="password"
+                required
               />
-              <p className="text-red-500 text-xs italic">
-                Please choose a password.
-              </p>
             </div>
+            {state.message && (
+              <div
+                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                role="alert"
+              >
+                <strong className="font-bold">{state.message}</strong>
+              </div>
+            )}
+            {<p className="">{state?.message}</p>}
             <div className="flex items-center justify-between">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -85,16 +71,16 @@ const LoginPage = () => {
               >
                 Sign In
               </button>
-              <a
+              {/* <a
                 className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
                 href="#"
               >
                 Forgot Password?
-              </a>
+              </a> */}
             </div>
           </form>
           <p className="text-center text-gray-500 text-xs">
-            &copy;2020 Acme Corp. All rights reserved.
+            &copy;2024 Learn Turkish. All rights reserved.
           </p>
         </div>
       </div>

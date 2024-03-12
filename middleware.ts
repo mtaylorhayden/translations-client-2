@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
+  console.log("middleware");
+
   if (!request.cookies.has("jwt")) {
     const url = new URL("/auth/login", request.url);
     console.log("url ", url.toString());
