@@ -1,17 +1,13 @@
 "use client";
 
-import handleSubmit from "@/app/api/auth/actions";
+import { InitialState, loginHandler } from "@/app/api/auth/actions";
 import React from "react";
 import { useFormState } from "react-dom";
-
-export type InitialState = {
-  message: string;
-};
 
 const LoginPage = () => {
   const initialState = { message: "" };
   const [state, formAction] = useFormState<InitialState, FormData>(
-    handleSubmit,
+    loginHandler,
     initialState
   );
 
@@ -47,7 +43,7 @@ const LoginPage = () => {
                 Password
               </label>
               <input
-                className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="password"
                 type="password"
                 placeholder="**********"
