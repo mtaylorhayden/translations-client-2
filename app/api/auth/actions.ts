@@ -78,6 +78,8 @@ export async function forgotPasswordHandler(
   prevState: InitialState,
   e: FormData
 ) {
+  console.log("inside forgotpasswordhandler");
+
   const email = e.get("email");
 
   const response = await fetch("http://localhost:8080/auth/forgotPassword", {
