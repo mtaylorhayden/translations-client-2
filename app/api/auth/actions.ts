@@ -65,8 +65,6 @@ export async function registerHandler(
     return { message: data.message };
   }
 
-  console.log("register ", response.headers.get("Set-Cookie"));
-
   const setCookieHeader = response.headers.get("Set-Cookie");
   if (setCookieHeader) {
     const jwtToken = setCookieHeader.split(";")[0].split("=")[1];
@@ -74,4 +72,25 @@ export async function registerHandler(
   }
 
   redirect("/");
+}
+
+export async function forgotPasswordHandler(
+  prevState: InitialState,
+  e: FormData
+) {
+  const email = e.get("email");
+
+  const response = await fetch("http://localhost:8080/auth/forgotPassword", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ email }),
+  });
+
+  // if email doesn't exist this should show the error
+  if (!response.ok) {
+    const data: Error = await response.json();
+    return { message: data.message };
+  }
+  return { message: "Email sent" };
 }

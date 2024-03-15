@@ -1,6 +1,7 @@
 "use client";
 
 import { InitialState, registerHandler } from "@/app/api/auth/actions";
+import Link from "next/link";
 import React from "react";
 import { useFormState } from "react-dom";
 
@@ -115,6 +116,17 @@ const RegisterPage = () => {
                 Register
               </button>
             </div>
+            <div className="flex items-center justify-between">
+              <p className="text-gray-700 text-sm font-bold mb-2">
+                Already have an account?
+              </p>
+            </div>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+            >
+              <Link href="/auth/login">Login</Link>
+            </button>
           </form>
           <p className="text-center text-gray-500 text-xs">
             &copy;2024 Learn Turkish. All rights reserved.

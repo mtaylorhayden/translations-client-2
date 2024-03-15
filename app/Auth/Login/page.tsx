@@ -1,6 +1,7 @@
 "use client";
 
 import { InitialState, loginHandler } from "@/app/api/auth/actions";
+import Link from "next/link";
 import React from "react";
 import { useFormState } from "react-dom";
 
@@ -59,7 +60,6 @@ const LoginPage = () => {
                 <strong className="font-bold">{state.message}</strong>
               </div>
             )}
-            {<p className="">{state?.message}</p>}
             <div className="flex items-center justify-between">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -67,12 +67,12 @@ const LoginPage = () => {
               >
                 Sign In
               </button>
-              {/* <a
+              <Link
                 className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                href="#"
+                href="/auth/forgotPassword"
               >
                 Forgot Password?
-              </a> */}
+              </Link>
             </div>
           </form>
           <p className="text-center text-gray-500 text-xs">
