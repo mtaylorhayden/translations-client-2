@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 const ResetPasswordForm = () => {
   const [message, setMessage] = useState("");
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
   const tokenId = searchParams.get("tokenId");
+  const router = useRouter();
   console.log(userId, tokenId);
 
   const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async (
@@ -27,12 +28,13 @@ const ResetPasswordForm = () => {
       body: JSON.stringify({ token, userId, password }),
     });
 
-    // if email doesn't exist this should show the error
     if (!response.ok) {
       const data: Error = await response.json();
-      return { message: data.message };
+      console.log("error in ResetPasswordForm ", data);
+
+      setMessage("Error resetting password");
     }
-    return { message: "Email sent" };
+    router.push("/");
   };
 
   return (
